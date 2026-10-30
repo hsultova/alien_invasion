@@ -14,7 +14,8 @@ class Ship:
         self.rect = self.image.get_rect()
 
         # Start each new ship at the bottom center of the screen
-        self.rect.midbottom = self.screen_rect.midbottom
+        self.rect.centerx = self.screen_rect.centerx
+        self.rect.bottom = self.screen_rect.bottom - self.settings.ship_padding
 
         self.x = float(self.rect.x)
 
@@ -32,4 +33,4 @@ class Ship:
         if self.moving_left and self.rect.left > 0:
             self.x -= self.settings.ship_speed
 
-        self.rect.x = self.x
+        self.rect.x = self.x   

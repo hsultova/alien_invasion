@@ -58,15 +58,7 @@ class AlienInvasion:
         if len(self.bullets) < self.settings.bullets_allowed:
             new_bullet = Bullet(self)
             self.bullets.add(new_bullet)
-
-    def _update_bullets(self):
-        """Update position of bullets and remove bullets that have disappeared off the screen"""
-        self.bullets.update()
-
-        for bullet in self.bullets.copy():
-            if bullet.rect.bottom <= 0:
-                self.bullets.remove(bullet)
-
+    
     def _create_fleet(self):
         """Create the fleet of aliens."""
         alien = Alien(self)
@@ -88,6 +80,32 @@ class AlienInvasion:
         new_alien.rect.y = y_position
         self.aliens.add(new_alien)
 
+    def _check_fleet_edges(self):
+        """Respond appropriately if any aliens have reached an edge."""
+        for alien in self.aliens.sprites():
+            if alien.check_edges():
+                self._change_fleet_direction()
+                break
+
+    def _change_fleet_direction(self):
+        """Drop the entire fleet and change the fleet direction."""
+        for alien in self.aliens.sprites():
+            alien.rect.y += self.settings.fleet_drop_speed
+        self.settings.fleet_direction *= -1
+
+    def _update_bullets(self):
+        """Update position of bullets and remove bullets that have disappeared of the screen"""
+        self.bullets.update()
+
+        for bullet in self.bullets.copy():
+            if bullet.rect.bottom <= 0:
+                self.bullets.remove(bullet)
+
+    def _update_aliens(self):
+        """Check if the fleet is at an edge and update the positions of all aliens in the fleet."""
+        self._check_fleet_edges()
+        self.aliens.update()
+
     def _update_screen(self):
         """Update images on the screen and flip to the new screen."""
         self.screen.fill(self.settings.background_color)      
@@ -104,6 +122,7 @@ class AlienInvasion:
             self._chek_events()
             self.ship.update()
             self._update_bullets()
+            self._update_aliens()
             self._update_screen()
             self.clock.tick(self.settings.framerate)
 

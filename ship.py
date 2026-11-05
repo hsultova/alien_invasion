@@ -1,13 +1,15 @@
 import pygame
 
+from settings import Settings
+
 class Ship:
     """A class to manage the ship."""
 
-    def __init__(self, alien_game):
+    def __init__(self, screen: pygame.Surface, settings: Settings) -> None:
         """Initialize the ship and set its starting position."""
-        self.screen = alien_game.screen
-        self.settings = alien_game.settings
-        self.screen_rect : pygame.Rect = alien_game.screen.get_rect()
+        self.screen = screen
+        self.settings = settings
+        self.screen_rect : pygame.Rect = screen.get_rect()
 
         # Load the ship image and get its rect
         self.image = pygame.image.load('assets/images/ship.png')

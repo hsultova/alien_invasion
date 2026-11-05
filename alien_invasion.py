@@ -9,7 +9,7 @@ from bullet import Bullet
 class AlienInvasion:
     """Overall class to manage game assets and behavior."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize the game and create game resources."""
         pygame.init()
 
@@ -19,7 +19,7 @@ class AlienInvasion:
         self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
         pygame.display.set_caption("Alien Invasion")
 
-        self.ship = Ship(self)
+        self.ship = Ship(self.screen, self.settings)
         self.bullets = pygame.sprite.Group()
         self.aliens = pygame.sprite.Group()
 
@@ -35,7 +35,7 @@ class AlienInvasion:
             elif event.type == pygame.KEYUP:
                 self._check_keyup_events(event)
 
-    def _check_keydown_events(self, event):
+    def _check_keydown_events(self, event: pygame.Event):
         """Respond to keypresses"""
         if event.key == pygame.K_RIGHT:
             self.ship.moving_right = True
@@ -46,7 +46,7 @@ class AlienInvasion:
         elif event.key == pygame.K_q:
             sys.exit()
 
-    def _check_keyup_events(self, event):
+    def _check_keyup_events(self, event: pygame.Event):
         """Respond to keyreleases"""
         if event.key == pygame.K_RIGHT:
             self.ship.moving_right = False
@@ -56,13 +56,13 @@ class AlienInvasion:
     def _fire_bullet(self):
         """Create a new bullet and add it to the bullets group."""
         if len(self.bullets) < self.settings.bullets_allowed:
-            new_bullet = Bullet(self)
+            new_bullet = Bullet(self.screen, self.settings, self.ship)
             self.bullets.add(new_bullet)
     
     def _create_fleet(self):
         """Create the fleet of aliens."""
-        alien = Alien(self)
-        alien_width, alien_height = alien.rect.size
+        new_alien = Alien(self.screen, self.settings)
+        alien_width, alien_height = new_alien.rect.size
 
         current_x, current_y = 2 * alien_width, alien_height
         while current_y < (self.settings.screen_height - self.settings.fleet_bottom_margin * alien_height):
@@ -72,9 +72,9 @@ class AlienInvasion:
             current_x = 2 * alien_width
             current_y += 2 * alien_height
 
-    def _create_alien(self, x_position, y_position):
+    def _create_alien(self, x_position: int, y_position: int):
         """Create an alien and place it in the row."""
-        new_alien = Alien(self)
+        new_alien = Alien(self.screen, self.settings)
         new_alien.x = x_position
         new_alien.rect.x = x_position
         new_alien.rect.y = y_position
@@ -115,6 +115,9 @@ class AlienInvasion:
         """Check if the fleet is at an edge and update the positions of all aliens in the fleet."""
         self._check_fleet_edges()
         self.aliens.update()
+
+        if pygame.sprite.spritecollideany(self.ship, self.aliens):
+            print("Ship hit!!!")
 
     def _update_screen(self):
         """Update images on the screen and flip to the new screen."""

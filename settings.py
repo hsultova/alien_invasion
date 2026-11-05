@@ -21,10 +21,11 @@ class Settings:
         self.bullet_color = (60, 60, 60)
         self.bullets_allowed = 3
 
-        # Alient settings
+        # Alien settings
         self.alien_speed = 1.0
         self.fleet_drop_speed = 10
         # fleet direction 1 -> right; -1 -> left
         self.fleet_direction = 1
         self.fleet_bottom_margin = 6
         self.fleet_side_margin = 2
+        self.ship_limit = 3

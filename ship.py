@@ -15,11 +15,7 @@ class Ship:
         self.image = pygame.image.load('assets/images/ship.png')
         self.rect = self.image.get_rect()
 
-        # Start each new ship at the bottom center of the screen
-        self.rect.centerx = self.screen_rect.centerx
-        self.rect.bottom = self.screen_rect.bottom - self.settings.ship_padding
-
-        self.x = float(self.rect.x)
+        self.cente_ship()
 
         self.moving_right = False
         self.moving_left = False
@@ -35,4 +31,11 @@ class Ship:
         if self.moving_left and self.rect.left > 0:
             self.x -= self.settings.ship_speed
 
-        self.rect.x = self.x   
+        self.rect.x = self.x
+
+    def cente_ship(self):
+        """Center the ship on the screen"""
+        # Start each new ship at the bottom center of the screen
+        self.rect.centerx = self.screen_rect.centerx
+        self.rect.bottom = self.screen_rect.bottom - self.settings.ship_padding
+        self.x = float(self.rect.x)

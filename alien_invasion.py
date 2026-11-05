@@ -1,8 +1,11 @@
 import sys
 import pygame
 
+from time import sleep
+
 from alien import Alien
 from settings import Settings
+from game_stats import GameStats
 from ship import Ship
 from bullet import Bullet
 
@@ -19,11 +22,15 @@ class AlienInvasion:
         self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
         pygame.display.set_caption("Alien Invasion")
 
+        self.stats = GameStats(self.settings)
+
         self.ship = Ship(self.screen, self.settings)
         self.bullets = pygame.sprite.Group()
         self.aliens = pygame.sprite.Group()
 
         self._create_fleet()
+
+        self.game_active = True
 
     def _chek_events(self):
         """Handling keypresses and mouse events."""
@@ -101,6 +108,20 @@ class AlienInvasion:
             self.bullets.empty()
             self._create_fleet()
 
+    def _ship_hit(self):
+        """Respond to the ship being hit by an alien."""
+        if self.stats.ship_left > 0:
+            self.restart_game()
+        else:
+            self.end_game()
+
+    def _check_aliens_bottom(self):
+        """Check if any aliens have reached the bottom of the screen."""
+        for alien in self.aliens.sprites():
+            if alien.rect.bottom >= self.settings.screen_height:
+                self._ship_hit()
+                break
+
     def _update_bullets(self):
         """Update position of bullets and remove bullets that have disappeared of the screen"""
         self.bullets.update()
@@ -117,7 +138,8 @@ class AlienInvasion:
         self.aliens.update()
 
         if pygame.sprite.spritecollideany(self.ship, self.aliens):
-            print("Ship hit!!!")
+            self._ship_hit()
+        self._check_aliens_bottom()
 
     def _update_screen(self):
         """Update images on the screen and flip to the new screen."""
@@ -129,13 +151,32 @@ class AlienInvasion:
 
         pygame.display.flip()
 
+    def restart_game(self):
+        self.stats.ship_left -= 1
+        self.bullets.empty()
+        self.aliens.empty()
+
+        self._create_fleet()
+        self.ship.cente_ship()
+        #Pause
+        sleep(1)
+
+    def end_game(self):        
+        self.bullets.empty()
+        self.aliens.empty()
+        
+        self.game_active = False
+
     def run_game(self):
         """Start the main loop for the game."""
         while True:
             self._chek_events()
-            self.ship.update()
-            self._update_bullets()
-            self._update_aliens()
+
+            if self.game_active:
+                self.ship.update()
+                self._update_bullets()
+                self._update_aliens()
+
             self._update_screen()
             self.clock.tick(self.settings.framerate)
 

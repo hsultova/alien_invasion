@@ -1,11 +1,11 @@
-import alien_invasion
+from settings import Settings
 
 class GameStats:
     """Track statistics for Alien Invasion."""
 
-    def __init__(self, alien_game: alien_invasion.AlienInvasion) -> None:
+    def __init__(self, settings: Settings) -> None:
         """Initialize statistics."""
-        self.settings = alien_game.settings
+        self.settings = settings
         self.reset_stats()
 
     def reset_stats(self):

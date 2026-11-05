@@ -15,7 +15,7 @@ class Settings:
         self.ship_padding = 20
 
         # Bullet settings
-        self.bullet_speed = 2.0
+        self.bullet_speed = 5.0
         self.bullet_width = 3
         self.bullet_height = 15
         self.bullet_color = (60, 60, 60)
@@ -26,3 +26,5 @@ class Settings:
         self.fleet_drop_speed = 10
         # fleet direction 1 -> right; -1 -> left
         self.fleet_direction = 1
+        self.fleet_bottom_margin = 6
+        self.fleet_side_margin = 2

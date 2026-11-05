@@ -65,8 +65,8 @@ class AlienInvasion:
         alien_width, alien_height = alien.rect.size
 
         current_x, current_y = 2 * alien_width, alien_height
-        while current_y < (self.settings.screen_height - 6 * alien_height):
-            while current_x < (self.settings.screen_width - 2 * alien_width):
+        while current_y < (self.settings.screen_height - self.settings.fleet_bottom_margin * alien_height):
+            while current_x < (self.settings.screen_width - self.settings.fleet_side_margin * alien_width):
                 self._create_alien(current_x, current_y)
                 current_x += 2 * alien_width 
             current_x = 2 * alien_width
@@ -93,6 +93,14 @@ class AlienInvasion:
             alien.rect.y += self.settings.fleet_drop_speed
         self.settings.fleet_direction *= -1
 
+    def _check_bullet_alien_collisions(self):
+        """Respond to bullet-alien collisions."""
+        pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
+        
+        if not self.aliens:
+            self.bullets.empty()
+            self._create_fleet()
+
     def _update_bullets(self):
         """Update position of bullets and remove bullets that have disappeared of the screen"""
         self.bullets.update()
@@ -100,6 +108,8 @@ class AlienInvasion:
         for bullet in self.bullets.copy():
             if bullet.rect.bottom <= 0:
                 self.bullets.remove(bullet)
+
+        self._check_bullet_alien_collisions()
 
     def _update_aliens(self):
         """Check if the fleet is at an edge and update the positions of all aliens in the fleet."""

@@ -1,19 +1,22 @@
 import pygame
 
+from pygame.sprite import Sprite
+
 from settings import Settings
 
-class Ship:
+class Ship(Sprite):
     """A class to manage the ship."""
 
     def __init__(self, screen: pygame.Surface, settings: Settings) -> None:
         """Initialize the ship and set its starting position."""
+        super().__init__()
         self.screen = screen
         self.settings = settings
         self.screen_rect : pygame.Rect = screen.get_rect()
 
         # Load the ship image and get its rect
-        self.image = pygame.image.load('assets/images/ship.png')
-        self.rect = self.image.get_rect()
+        self.image: pygame.Surface = pygame.image.load('assets/images/ship.png')
+        self.rect: pygame.Rect = self.image.get_rect()
 
         self.cente_ship()
 

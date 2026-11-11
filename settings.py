@@ -25,8 +25,8 @@ class Settings:
         # Alien settings
         self.fleet_drop_speed = 10
 
-        self.fleet_bottom_margin = 16
-        self.fleet_side_margin = 10
+        self.fleet_bottom_margin = 6
+        self.fleet_side_margin = 4
 
         # Button settings
         self.button_width, self.button_height = 200, 50
@@ -35,6 +35,7 @@ class Settings:
         self.button_font = pygame.font.SysFont(None, 48)
 
         self.speedup_scale = 1.5
+        self.score_scale = 2.0
 
         self.initialize_dynamic_settings()
 
@@ -47,8 +48,12 @@ class Settings:
         # fleet direction 1 -> right; -1 -> left
         self.fleet_direction = 1
 
+        self.alien_points = 50
+
     def increase_speed(self):
-        """Increase speed settings."""
+        """Increase speed settings and alien point values."""
         self.ship_speed *= self.speedup_scale
         self.bullet_speed *= self.speedup_scale
         self.alien_speed *= self.speedup_scale
+
+        self.alien_points = int(self.alien_points * self.score_scale)

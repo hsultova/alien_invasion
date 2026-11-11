@@ -40,7 +40,8 @@ class AlienInvasion:
         """Handling keypresses and mouse events."""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                sys.exit() 
+                self.stats.write_high_score()
+                sys.exit()
             elif event.type == pygame.KEYDOWN:
                 self._check_keydown_events(event)
             elif event.type == pygame.KEYUP:
@@ -192,9 +193,7 @@ class AlienInvasion:
         """Reset the game state to start a new game."""
         self.settings.initialize_dynamic_settings()
         self.stats.reset_stats()
-        self.scoreboard.prep_score()
-        self.scoreboard.prep_level()
-        self.scoreboard.prep_ships()
+        self.scoreboard.prep_images()
 
         self.game_active = True
         self.bullets.empty()

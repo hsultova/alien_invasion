@@ -4,6 +4,7 @@ import pygame
 from time import sleep
 
 from alien import Alien
+from button import Button
 from settings import Settings
 from game_stats import GameStats
 from ship import Ship
@@ -30,9 +31,10 @@ class AlienInvasion:
 
         self._create_fleet()
 
-        self.game_active = True
+        self.game_active = False
+        self.play_button = Button(self.screen, self.settings, "Play")
 
-    def _chek_events(self):
+    def _check_events(self):
         """Handling keypresses and mouse events."""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -41,6 +43,9 @@ class AlienInvasion:
                 self._check_keydown_events(event)
             elif event.type == pygame.KEYUP:
                 self._check_keyup_events(event)
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_position = pygame.mouse.get_pos()
+                self._check_play_button(mouse_position)
 
     def _check_keydown_events(self, event: pygame.Event):
         """Respond to keypresses"""
@@ -149,6 +154,9 @@ class AlienInvasion:
         for bullet in self.bullets.sprites():
             bullet.draw()
 
+        if not self.game_active:
+            self.play_button.draw()
+
         pygame.display.flip()
 
     def restart_game(self):
@@ -170,7 +178,7 @@ class AlienInvasion:
     def run_game(self):
         """Start the main loop for the game."""
         while True:
-            self._chek_events()
+            self._check_events()
 
             if self.game_active:
                 self.ship.update()
@@ -179,6 +187,11 @@ class AlienInvasion:
 
             self._update_screen()
             self.clock.tick(self.settings.framerate)
+
+    def _check_play_button(self, mouse_position):
+        """Start a new game when the player click Play."""
+        if self.play_button.rect.collidepoint(mouse_position):
+            self.game_active = True
 
 if __name__ == '__main__':
     alien_invasion = AlienInvasion()

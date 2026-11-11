@@ -1,3 +1,5 @@
+import pygame
+
 class Settings:
     """A class to store all settings for Alien Invasion."""
 
@@ -29,3 +31,9 @@ class Settings:
         self.fleet_direction = 1
         self.fleet_bottom_margin = 6
         self.fleet_side_margin = 2
+
+        # Button settings
+        self.button_width, self.button_height = 200, 50
+        self.button_color = (0, 135, 0)
+        self.text_color = (255, 255, 255)
+        self.button_font = pygame.font.SysFont(None, 48)

@@ -115,6 +115,7 @@ class AlienInvasion:
         if not self.aliens:
             self.bullets.empty()
             self._create_fleet()
+            self.settings.increase_speed()
 
     def _ship_hit(self):
         """Respond to the ship being hit by an alien."""
@@ -176,6 +177,7 @@ class AlienInvasion:
 
     def reset_game(self):
         """Reset the game state to start a new game."""
+        self.settings.initialize_dynamic_settings()
         self.stats.reset_stats()
         self.game_active = True
         self.bullets.empty()

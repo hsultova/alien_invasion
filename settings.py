@@ -13,27 +13,42 @@ class Settings:
         self.framerate = 60
 
         # Ship settings
-        self.ship_speed = 5.5
         self.ship_padding = 20
         self.ship_limit = 3
 
         # Bullet settings
-        self.bullet_speed = 5.0
         self.bullet_width = 3
         self.bullet_height = 15
         self.bullet_color = (60, 60, 60)
         self.bullets_allowed = 3
 
         # Alien settings
-        self.alien_speed = 1.0
-        self.fleet_drop_speed = 100
-        # fleet direction 1 -> right; -1 -> left
-        self.fleet_direction = 1
-        self.fleet_bottom_margin = 6
-        self.fleet_side_margin = 2
+        self.fleet_drop_speed = 10
+
+        self.fleet_bottom_margin = 16
+        self.fleet_side_margin = 10
 
         # Button settings
         self.button_width, self.button_height = 200, 50
         self.button_color = (0, 135, 0)
         self.text_color = (255, 255, 255)
         self.button_font = pygame.font.SysFont(None, 48)
+
+        self.speedup_scale = 1.5
+
+        self.initialize_dynamic_settings()
+
+    def initialize_dynamic_settings(self):
+        """Initialize settings that change throughout the game."""
+        self.ship_speed = 5.0
+        self.bullet_speed = 4.5
+        self.alien_speed = 1.0
+
+        # fleet direction 1 -> right; -1 -> left
+        self.fleet_direction = 1
+
+    def increase_speed(self):
+        """Increase speed settings."""
+        self.ship_speed *= self.speedup_scale
+        self.bullet_speed *= self.speedup_scale
+        self.alien_speed *= self.speedup_scale

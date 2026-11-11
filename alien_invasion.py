@@ -55,6 +55,9 @@ class AlienInvasion:
             self.ship.moving_left = True
         elif event.key == pygame.K_SPACE:
             self._fire_bullet()
+        elif event.key ==  pygame.K_p:
+            self.reset_game()
+            pygame.mouse.set_visible(False)
         elif event.key == pygame.K_q:
             sys.exit()
 
@@ -119,6 +122,7 @@ class AlienInvasion:
             self.restart_game()
         else:
             self.end_game()
+            pygame.mouse.set_visible(True)
 
     def _check_aliens_bottom(self):
         """Check if any aliens have reached the bottom of the screen."""
@@ -160,6 +164,7 @@ class AlienInvasion:
         pygame.display.flip()
 
     def restart_game(self):
+        """Restart the game after the ship has been hit."""
         self.stats.ship_left -= 1
         self.bullets.empty()
         self.aliens.empty()
@@ -169,7 +174,19 @@ class AlienInvasion:
         #Pause
         sleep(1)
 
-    def end_game(self):        
+    def reset_game(self):
+        """Reset the game state to start a new game."""
+        self.stats.reset_stats()
+        self.game_active = True
+        self.bullets.empty()
+        self.aliens.empty()
+
+        self._create_fleet()
+        self.ship.cente_ship()
+
+    def end_game(self): 
+        """End the game and reset the game state."""
+        self.stats.reset_stats()
         self.bullets.empty()
         self.aliens.empty()
         
@@ -190,8 +207,10 @@ class AlienInvasion:
 
     def _check_play_button(self, mouse_position):
         """Start a new game when the player click Play."""
-        if self.play_button.rect.collidepoint(mouse_position):
-            self.game_active = True
+        button_clicked = self.play_button.rect.collidepoint(mouse_position)
+        if button_clicked and not self.game_active:
+            self.reset_game()
+            pygame.mouse.set_visible(False)
 
 if __name__ == '__main__':
     alien_invasion = AlienInvasion()

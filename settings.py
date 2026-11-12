@@ -26,8 +26,8 @@ class Settings:
         # Alien settings
         self.fleet_drop_speed = 10
 
-        self.fleet_bottom_margin = 6
-        self.fleet_side_margin = 4
+        self.fleet_bottom_margin = 8
+        self.fleet_side_margin = 2
 
         # Button settings
         self.button_width, self.button_height = 200, 50

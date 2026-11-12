@@ -48,7 +48,7 @@ class AlienInvasion:
         new_alien = Alien(self.screen, self.settings)
         alien_width, alien_height = new_alien.rect.size
 
-        current_x, current_y = 2 * alien_width, alien_height
+        current_x, current_y = 2 * alien_width, 4 * alien_height
         while current_y < (self.settings.screen_height - self.settings.fleet_bottom_margin * alien_height):
             while current_x < (self.settings.screen_width - self.settings.fleet_side_margin * alien_width):
                 self._create_alien(current_x, current_y)
